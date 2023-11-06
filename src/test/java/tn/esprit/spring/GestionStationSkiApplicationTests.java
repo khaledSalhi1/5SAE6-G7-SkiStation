@@ -10,10 +10,7 @@ import tn.esprit.spring.services.CourseServicesImpl;
 @SpringBootTest
 class GestionStationSkiApplicationTests {
 
-//	@Mock
-//	ICourseRepository iCourseRepository;
-//	@InjectMocks
-//	CourseServicesImpl courseServices;
+
 	@Test
 	void contextLoads() {
 	}
