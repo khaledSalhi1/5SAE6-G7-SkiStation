@@ -1,17 +1,39 @@
-ski-station-api:
-  build: .
-  restart: always
-  ports:
-    - 8089:8089
-  depends_on:
-    - mysqldb
+version: '3'
 
-  mysqldb:
-    image: "mysql:latest"
-    restart: always
-    ports:
-      - 3306:3306
-
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
     environment:
-      MYSQL_DATABASE: stationSki
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_ROOT_PASSWORD: ''
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    image: khaledsalhi-5sae6-g7-skistation
+    container_name: spring-app
+    ports:
+      - "8089:8089"
+    networks:
+      - mynetwork
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/stationSki?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL5InnoDBDialect
+      LOGGING_LEVEL_ROOT: info
+      LOGGING_PATTERN_CONSOLE: '%d{yyyy-MM-dd HH:mm:ss} - %-5level- %logger{45} - %msg %n'
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  mysql-data:
