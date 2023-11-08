@@ -13,5 +13,5 @@ ski-station-api:
       - 3306:3306
 
     environment:
-      MYSQL_DATABASE: skiProject
+      MYSQL_DATABASE: stationSki
       MYSQL_ALLOW_EMPTY_PASSWORD: yes
