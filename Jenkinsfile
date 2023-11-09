@@ -29,15 +29,6 @@ pipeline {
             }
         }
 
-        stage('SONARQUBE Analysis') {
-            steps {
-                // Run SonarQube analysis
-                withSonarQubeEnv('Sonarqube') {
-                    sh 'mvn sonar:sonar -Dsonar.login=squ_3b9afa1e715d52c1dc99879e10d15c42c24bde58'
-                }
-            }
-        }
-
         stage('NEXUS') {
             steps {
                 sh 'mvn deploy -DskipTests'
@@ -69,7 +60,16 @@ pipeline {
                     steps {
                         sh 'mvn jacoco:prepare-agent test jacoco:report'
                         archiveArtifacts artifacts: 'target/site/jacoco/**/*', allowEmptyArchive: true
+                        jacoco(execPattern: '**/target/jacoco.exec', classPattern: '**/classes', sourcePattern: '**/src/main/java')
                     }
+        }
+        stage('SONARQUBE Analysis') {
+            steps {
+                // Run SonarQube analysis
+                withSonarQubeEnv('Sonarqube') {
+                    sh 'mvn sonar:sonar -Dsonar.login=squ_3b9afa1e715d52c1dc99879e10d15c42c24bde58 -Dsonar.jacoco.reportPaths=target/jacoco.exec'
+                }
+            }
         }
 
         stage('Start Prometheus') {
