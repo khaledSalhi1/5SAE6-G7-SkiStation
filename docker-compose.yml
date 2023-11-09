@@ -1,0 +1,17 @@
+ski-station-api:
+  build: .
+  restart: always
+  ports:
+    - 9090:9090
+  depends_on:
+    - mysqldb
+
+  mysqldb:
+    image: "mysql:latest"
+    restart: always
+    ports:
+      - 3306:3306
+
+    environment:
+      MYSQL_DATABASE: skiProject
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
