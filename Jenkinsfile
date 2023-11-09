@@ -86,7 +86,7 @@ pipeline {
         stage('Start Grafana') {
                     steps {
                         script {
-                            sh 'sudo docker start grafana'
+                            sh 'docker start grafana'
                         }  
                     }
         }
