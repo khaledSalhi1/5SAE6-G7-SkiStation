@@ -65,17 +65,13 @@ pipeline {
                // sh 'docker compose up -d'
             }
         }
-        stage('Jacoco') {
+        stage('JACOCO/JUNIT/MOCKITO') {
                     steps {
                         sh 'mvn jacoco:prepare-agent test jacoco:report'
                         archiveArtifacts artifacts: 'target/site/jacoco/**/*', allowEmptyArchive: true
                     }
         }
-        stage('JUNIT/MOCKITO') {
-                    steps {
-                        sh 'mvn test'
-                    }
-        }
+
         stage('Start Prometheus') {
                     steps {
                         script {
