@@ -14,7 +14,7 @@ services:
       - mysql-data:/var/lib/mysql
 
   app:
-    image: wassimderouiche-5sae6-g7-skistation
+    image: wassimderouiche-5sae6-g7-skistation:latest
     container_name: spring-app
     ports:
       - "8089:8089"
