@@ -18,7 +18,7 @@ pipeline {
 
         stage('CLEAN') {
             steps {
-                // Run Maven clean and compile commands
+                // Run Maven clean 
                 sh 'mvn clean'
             }
         }
@@ -54,14 +54,15 @@ pipeline {
             steps {
                 // Deployer l'image
                 sh 'docker login -u khaledsalhi -p khaledsalhi0012'
-                sh 'docker push khaledsalhi/khaledsalhi-5sae6-g7-skistation'
+               // sh 'docker push khaledsalhi/khaledsalhi-5sae6-g7-skistation'
             }
         }
 
         stage('Docker Compose'){
             steps {
                 // Lancer Docker-Compose
-                sh 'docker compose up -d'
+                sh 'docker login -u khaledsalhi -p khaledsalhi0012'
+               // sh 'docker compose up -d'
             }
         }
         stage('Jacoco') {
@@ -75,6 +76,17 @@ pipeline {
                         sh 'mvn test'
                     }
         }
+        stage('Start Prometheus') {
+                    steps {
+                        sh 'sudo docker start prometheus'
+                    }
+        }
+        stage('Start Grafana') {
+                    steps {
+                        sh 'sudo docker start grafana'
+                    }
+        }
+        
 
         stage('Mail') {
             steps {
